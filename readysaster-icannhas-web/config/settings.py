@@ -39,10 +39,13 @@ class Common(Configuration):
         'django.contrib.staticfiles',
 
         # Useful template tags:
-        # 'django.contrib.humanize',
+        'django.contrib.humanize',
 
         # Admin
         'django.contrib.admin',
+
+        # GeoDjango
+        'django.contrib.gis',
     )
     THIRD_PARTY_APPS = (
         'south',  # Database migration helpers:
