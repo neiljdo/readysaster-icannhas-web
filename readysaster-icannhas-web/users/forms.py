@@ -12,3 +12,8 @@ class UserForm(forms.ModelForm):
 
         # Constrain the UserForm to just these fields.
         fields = ("first_name", "last_name")
+
+
+# TODO: Implement custom signup form for LGUs
+# Currently, we just signup as an LGU but the municipality is assigned
+# via Django admin

@@ -3,6 +3,8 @@ from django.conf.urls import patterns, url
 
 from users import views
 
+
+# URL patterns for Users
 urlpatterns = patterns('',
     # URL pattern for the UserListView
     url(

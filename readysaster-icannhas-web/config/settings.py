@@ -61,6 +61,7 @@ class Common(Configuration):
         # Your stuff: custom apps go here
 
         'rp',
+        'exposure',
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
