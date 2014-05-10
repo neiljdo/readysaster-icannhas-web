@@ -31,5 +31,8 @@ node_modules/
 # Campass
 .sass-cache
 
-# virtualenv
+# Virtualenv
 .venv
+
+# Data
+data
