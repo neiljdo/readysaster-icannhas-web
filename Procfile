@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath="$PWD/readysaster-icannhas-web" config.wsgi:application
