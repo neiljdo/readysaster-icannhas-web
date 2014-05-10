@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 
-from .models import User
+from .models import User, LGU
 
 
 class UserAdmin(AuthUserAdmin):
@@ -11,4 +11,9 @@ class UserAdmin(AuthUserAdmin):
     update_form_class = UserChangeForm
 
 
+class LGUAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(LGU, LGUAdmin)
