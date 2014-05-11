@@ -30,7 +30,7 @@ class Municipality(models.Model):
         flooding_events = flooding_events.read()
         flooding_events = json.loads(flooding_events)
 
-        geoserver_layers = []
+        relevant_flood_events = []
         for event in flooding_events:
             if event['verbose_name'] == '100-Year':
                 floods = event['flood']
@@ -39,7 +39,11 @@ class Municipality(models.Model):
                     flood_center = flood['center']
                     flood_center = Point(flood_center['lng'], flood_center['lat'])
                     if self.geom.contains(flood_center):
-                        geoserver_layers.append(flood['geoserver_layer'])
+                        relevant_flood_events.append(flood['geoserver_layer'])
+
+        for event in relevant_flood_events:
+            pass
+
 
         print geoserver_layers
 
