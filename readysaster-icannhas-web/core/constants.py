@@ -11,7 +11,7 @@ CHOICES = {
     ),
 
     'EVENT': Choices(
-        (1, 'heavy_rainfall', 'Heavy rainfall'),
+        (1, 'heavy_rainfall', 'Rainfall'),
         (2, 'typhoon', 'Typhoon')
     ),
 

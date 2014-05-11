@@ -9,4 +9,9 @@ urlpatterns = patterns('',
         views.FloodingWarningCreateView.as_view(),
         name='view',
     ),
+    url(
+        r'^flood-warning/(?P<id>\w+)/$',
+        views.FloodingWarningView.as_view(),
+        name='view',
+    ),
 )

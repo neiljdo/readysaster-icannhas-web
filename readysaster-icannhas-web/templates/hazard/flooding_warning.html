@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block map_url %}
+{% endblock %}
+
+{% block content %}
+<div id="map" data-url="" style="width: 100%; height: 500px;"></div>
+<form class="flooding-warning" method="post">
+	{% csrf_token %}
+	<div>
+		<ul class="list-unstyled">
+			<li><strong>{{ object.event }}</strong></li>
+			<li>{{ object.rainfall }}</li>
+		</ul>
+	</div>
+</form>
+
+{% endblock content %}

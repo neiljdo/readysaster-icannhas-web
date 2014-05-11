@@ -59,6 +59,8 @@
           {% endfor %}
       {% endif %}
 
+      <!-- <div id="map" data-url="{% block map_url %}{% endblock %}" style="width: 100%; height: 300px;"></div> -->
+
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
@@ -72,6 +74,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     {% block javascript %}
       <!-- Latest JQuery -->
+      <script src="{% static 'js/jquery-1.10.1.js' %}"></script>
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
       <!-- Latest compiled and minified JavaScript -->
@@ -82,6 +85,27 @@
 
       <!-- place project specific Javascript in this file -->
       <script src="{% static 'js/project.js' %}"></script>
+      <script>
+      var map = new OpenLayers.Map({
+          div: "map",
+          layers: [
+              new OpenLayers.Layer.OSM("OpenStreetMap (Mapnik)"),
+              new OpenLayers.Layer.Vector("KML", {
+                  strategies: [new OpenLayers.Strategy.Fixed()],
+                  protocol: new OpenLayers.Protocol.HTTP({
+                      url: 'http://127.0.0.1:8000/media/uploads/floodmaps/noah-Pampanga_Bacolor_Flood_100year.kml',
+                      format: new OpenLayers.Format.KML({
+                          extractStyles: true, 
+                          extractAttributes: true,
+                          maxDepth: 2
+                      })
+                  })
+              })
+          ],
+          center: new OpenLayers.LonLat(0,0),
+          zoom: 1
+      });
+      </script>
     {% endblock javascript %}
   </body>
 </html>

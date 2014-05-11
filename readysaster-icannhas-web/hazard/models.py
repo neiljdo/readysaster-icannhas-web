@@ -14,10 +14,16 @@ RAINFALL_WARNING_CHOICES = CHOICES['RAINFALL_WARNING']
 class Hazard(models.Model):
     label = models.IntegerField(choices=HAZARD_CHOICES, unique=True)
 
+    def __unicode__(self):
+        return self.get_label_display()
+
 
 class Event(models.Model):
     label = models.IntegerField(choices=EVENT_CHOICES, unique=True)
     associated_hazards = models.ManyToManyField('Hazard')
+
+    def __unicode__(self):
+        return self.get_label_display()
 
     '''
     sample event-hazard associations:
@@ -35,6 +41,7 @@ class ReturnPeriod(models.Model):
 
     def __unicode__(self):
         return self.years
+
 
 class RainfallReturnPeriodData(models.Model):
     municipality = models.ForeignKey('rp.Municipality')
@@ -63,6 +70,17 @@ class FloodingWarning(TimeStampedModel):
         choices=RAINFALL_WARNING_CHOICES,
         default=RAINFALL_WARNING_CHOICES.none
     )
+
+    def __unicode__(self):
+        return '{0}'.format(self.rainfall)
+
+    @property
+    def rainfall(self):
+        rainfall = ''
+        if self.numerical_rainfall_amount:
+            rainfall +=  (str(self.numerical_rainfall_amount) + ' mm/hr ')
+        rainfall += self.get_descriptive_rainfall_amount_display()
+        return rainfall
 
     def save(self, *args, **kwargs):
         if not self.numerical_rainfall_amount and not self.descriptive_rainfall_amount:
