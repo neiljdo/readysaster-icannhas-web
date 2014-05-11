@@ -4,6 +4,7 @@ import urllib2
 
 from django.core.files import File
 from django.conf import settings
+from django.contrib.gis.geos import Point
 
 from .models import FloodMap, ReturnPeriod
 from rp.models import Municipality
@@ -40,12 +41,12 @@ def get_floodmap_kml_file(layers, bbox, height=720, width=330, styles=''):
     return mapfile
 
 
-def create_floodmap_instances():
+def get_floodmap_instances(municipality):
     url = settings.NOAH_API_URL + 'flood_maps'
     data = urllib2.urlopen(url)
     data = data.read()
     events = json.loads(data)
-    events = events[0]
+
     for event in events:
         return_period = event['verbose_name']
 
@@ -54,16 +55,22 @@ def create_floodmap_instances():
 
         floodmaps = event['floods']
         for floodmap in floodmaps:
-            centroid = floodmap['center']
+            flood_center = floodmap['center']
             layer = floodmap['geoserver_layer']
-            municipality = Municipality.get_instance(lat=centroid['lat'], lng=centroid['lng'])
-            return_period = ReturnPeriod.objects.get(return_period=return_period, municipality=municipality)
-            coords = municipality.geom.extent
-            bbox = ''
-            for coord in coords:
-                bbox += (coord + ',')
-            bbox = bbox[:-1]
-            map_kml = municipality.get_floodmap_kml_file(layer, bbox)
+            flood_center = Point(flood_center['lng'], flood_center['lat'])
 
-    fm = FloodMap(municipality=municipality, return_period=return_period, map_kml=map_kml)
-    fm.save()
+            if municipality.geom.contains(flood_center):
+                return_period = ReturnPeriod.objects.get(return_period=return_period, municipality=municipality)
+                coords = municipality.geom.extent
+                bbox = ''
+                for coord in coords:
+                    bbox += (coord + ',')
+                bbox = bbox[:-1]
+                map_kml = municipality.get_floodmap_kml_file(layer, bbox)
+
+                try:
+                    fm = FloodMap.objects.get(municipality=municipality, return_period=return_period)
+                    fm.map_kml = map_kml
+                except FloodMap.DoesNotExist:
+                    fm = FloodMap(municipality=municipality, return_period=return_period, map_kml=map_kml)
+                fm.save()
