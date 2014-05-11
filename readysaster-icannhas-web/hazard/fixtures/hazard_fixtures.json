@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "hazard.returnperiod", "fields": {"years": 100}}, {"pk": 1, "model": "hazard.floodmap", "fields": {"map_kml": "uploads/floodmaps/noah-Pampanga_Bacolor_Flood_100year.kml", "return_period": 1, "municipality": 10618}}]

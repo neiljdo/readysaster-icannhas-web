@@ -34,7 +34,7 @@ class ReturnPeriod(models.Model):
     years = models.PositiveIntegerField(unique=True)
 
     def __unicode__(self):
-        return self.years 
+        return self.years
 
 class RainfallReturnPeriodData(models.Model):
     municipality = models.ForeignKey('rp.Municipality')
@@ -83,4 +83,4 @@ class FloodMap(models.Model):
         unique_together = (('municipality', 'return_period'),)
 
     def __unicode__(self):
-        return '{0}: {1}'.format(self.municipality, self.return_period)
+        return '{0}: {1}'.format(self.municipality, self.return_period.years)

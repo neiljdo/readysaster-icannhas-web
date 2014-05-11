@@ -35,9 +35,11 @@ def get_floodmap_kml_file(layers, bbox, height=720, width=330, styles=''):
     data = urllib2.urlopen(url)
 
     path = 'uploads/floodmaps/{}.kml'.format(layers)
+    print path
     with open(path, 'wb+') as destination:
         for chunk in data.chunks():
             destination.write(chunk)
+        print 'test'
         return destination
 
 
@@ -58,7 +60,7 @@ def get_floodmap_instances(municipality):
             flood_center = floodmap['center']
             layer = floodmap['geoserver_layer']
             flood_center = Point(flood_center['lng'], flood_center['lat'])
-
+            print floodmap
             if municipality.geom.contains(flood_center):
                 return_period, created = ReturnPeriod.objects.get_or_create(years=return_period)
                 coords = municipality.geom.extent
@@ -66,6 +68,7 @@ def get_floodmap_instances(municipality):
                 for coord in coords:
                     bbox += (str(coord) + ',')
                 bbox = bbox[:-1]
+                print bbox
                 map_kml = get_floodmap_kml_file(layer, bbox)
 
                 try:
