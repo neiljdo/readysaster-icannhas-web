@@ -44,9 +44,6 @@ class Municipality(models.Model):
         for event in relevant_flood_events:
             pass
 
-
-        print geoserver_layers
-
         # fetch *.kml files from NOAH
 
         return []
