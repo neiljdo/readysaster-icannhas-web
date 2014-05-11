@@ -37,10 +37,15 @@ class Structure(models.Model):
         ('S-3', 's3', _(u'Steel frame with cast-in-place concrete shear walls')),
     )
 
+    lon = models.FloatField()
+    lat = models.FloatField()
+
     geo = models.PointField(srid=4326)
+    objects = models.GeoManager()
 
     identifier = models.CharField(max_length=254)
     description = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='photos/structures')
 
     # structural description
     # building material
