@@ -6,6 +6,9 @@ from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
 from django.utils.translation import ugettext_lazy as _
 
+from hazard.utils import get_floodmap_instances
+from hazard.models import FloodMap
+
 
 class Municipality(models.Model):
     name = models.CharField(max_length=254)
@@ -25,28 +28,30 @@ class Municipality(models.Model):
             return u'Municipality-%2d' % self.pk
 
     def get_floodmaps(self):
-        # fetch floodmaps list from NOAH
-        flooding_events = urllib2.urlopen('http://202.90.153.89/api/flood_maps')
-        flooding_events = flooding_events.read()
-        flooding_events = json.loads(flooding_events)
+        get_floodmap_instances(self)
+        return FloodMap.objects.filter(municipality=self).values_list('map_kml', flat=True)
+        # # fetch floodmaps list from NOAH
+        # flooding_events = urllib2.urlopen('http://202.90.153.89/api/flood_maps')
+        # flooding_events = flooding_events.read()
+        # flooding_events = json.loads(flooding_events)
 
-        relevant_flood_events = []
-        for event in flooding_events:
-            if event['verbose_name'] == '100-Year':
-                floods = event['flood']
+        # relevant_flood_events = []
+        # for event in flooding_events:
+        #     if event['verbose_name'] == '100-Year':
+        #         floods = event['flood']
 
-                for flood in floods:
-                    flood_center = flood['center']
-                    flood_center = Point(flood_center['lng'], flood_center['lat'])
-                    if self.geom.contains(flood_center):
-                        relevant_flood_events.append(flood['geoserver_layer'])
+        #         for flood in floods:
+        #             flood_center = flood['center']
+        #             flood_center = Point(flood_center['lng'], flood_center['lat'])
+        #             if self.geom.contains(flood_center):
+        #                 relevant_flood_events.append(flood['geoserver_layer'])
 
-        for event in relevant_flood_events:
-            pass
+        # for event in relevant_flood_events:
+        #     pass
 
         # fetch *.kml files from NOAH
 
-        return []
+        # return []
 
 
 # Auto-generated `LayerMapping` dictionary for Municipality model
