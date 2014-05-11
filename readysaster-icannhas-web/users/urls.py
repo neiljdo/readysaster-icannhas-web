@@ -30,4 +30,11 @@ urlpatterns = patterns('',
         view=views.UserUpdateView.as_view(),
         name='update'
     ),
+
+    # URL pattern for the UserDetailView
+    url(
+        regex=r'^(?P<username>[\w\-_]+)/floodmaps/$',
+        view=views.FetchFloodMapView.as_view(),
+        name='floodmaps'
+    ),
 )

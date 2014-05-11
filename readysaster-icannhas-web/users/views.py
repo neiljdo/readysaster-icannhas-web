@@ -55,3 +55,23 @@ class UserListView(LoginRequiredMixin, ListView):
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
+
+
+class FetchFloodMapView(LoginRequiredMixin, DetailView):
+    model = User
+    slug_field = "username"
+    slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        context_data = super(FetchFloodMapView, self).get_context_data(**kwargs)
+
+        # fetch flood maps using NOAH API
+        municipality = self.object.lgu.municipality
+        floodmaps = municipality.get_floodmaps()
+
+        # add newly fetched floodmaps to context
+        context_data.update({
+            'floodmaps': floodmaps
+        })
+
+        return context_data

@@ -1,4 +1,9 @@
+import json
+import urllib
+import urllib2
+
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -18,6 +23,29 @@ class Municipality(models.Model):
             return u'%s' % self.name
         else:
             return u'Municipality-%2d' % self.pk
+
+    def get_floodmaps(self):
+        # fetch floodmaps list from NOAH
+        flooding_events = urllib2.urlopen('http://202.90.153.89/api/flood_maps')
+        flooding_events = flooding_events.read()
+        flooding_events = json.loads(flooding_events)
+
+        geoserver_layers = []
+        for event in flooding_events:
+            if event['verbose_name'] == '100-Year':
+                floods = event['flood']
+
+                for flood in floods:
+                    flood_center = flood['center']
+                    flood_center = Point(flood_center['lng'], flood_center['lat'])
+                    if self.geom.contains(flood_center):
+                        geoserver_layers.append(flood['geoserver_layer'])
+
+        print geoserver_layers
+
+        # fetch *.kml files from NOAH
+
+        return []
 
 
 # Auto-generated `LayerMapping` dictionary for Municipality model
