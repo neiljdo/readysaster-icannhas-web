@@ -62,6 +62,8 @@ class Common(Configuration):
 
         'rp',
         'exposure',
+        'hazard',
+        'core',
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -279,7 +281,6 @@ class Common(Configuration):
 
 
     ########## Your common stuff: Below this line define 3rd party libary settings
-
 
 class Local(Common):
 
