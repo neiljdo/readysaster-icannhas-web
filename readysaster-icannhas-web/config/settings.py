@@ -63,7 +63,7 @@ class Common(Configuration):
         'rp',
         'exposure',
         'hazard',
-        'core',
+        'core'
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -281,6 +281,8 @@ class Common(Configuration):
 
 
     ########## Your common stuff: Below this line define 3rd party libary settings
+    NOAH_GEOSERVER_URL = 'http://202.90.153.87:8080/geoserver/wms/'
+    NOAH_API_URL = 'http://202.90.153.89/api/'
 
 class Local(Common):
 
